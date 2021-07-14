@@ -1,5 +1,8 @@
+// Package pleasant /*
+package pleasant
+
 /*
-Copyright © 2021 NAME HERE <EMAIL ADDRESS>
+Copyright © 2021 David Lukac <david.lukac@users.noreply.github.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,7 +16,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package pleasant
 
 import (
 	"github.com/spf13/cobra"
@@ -21,9 +23,9 @@ import (
 
 // passwordServerCmd represents the passwordServer command
 var passwordServerCmd = &cobra.Command{
-	Use:   "password-server",
+	Use:     "password-server",
 	Aliases: []string{"ps"},
-	Short: "A brief description of your command",
+	Short:   "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

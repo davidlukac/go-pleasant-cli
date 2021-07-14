@@ -9,3 +9,25 @@ func GetEntry(id string) *client.Secret {
 	secret := vault.GetSecret(id)
 	return &secret
 }
+
+// CreateEntry
+// Create new Password Server entry
+func CreateEntry(entry *client.Secret) *client.Secret {
+	vault := GetVault()
+	newEntry := vault.CreateEntry(entry)
+	return newEntry
+}
+
+// EntryExistsByName checks whether an entry
+func EntryExistsByName(name string, parentId string) bool {
+	vault := GetVault()
+	folder := vault.GetFolder(parentId)
+
+	for _, c := range folder.Credentials {
+		if c.Name == name {
+			return true
+		}
+	}
+
+	return false
+}
