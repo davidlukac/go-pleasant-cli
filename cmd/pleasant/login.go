@@ -20,6 +20,7 @@ limitations under the License.
 import (
 	"fmt"
 	"github.com/davidlukac/go-pleasant-cli/internal"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -34,11 +35,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("login called")
 		vault := internal.GetVault()
-		secret := vault.GetSecret("f1aba660-8bd9-48a7-8b1f-be813f9e1be2")
-		fmt.Println(secret.Username)
-		fmt.Println(secret.Password)
+		log.Infoln(fmt.Sprintf("Logged in as %s@%s", vault.Username, vault.URL))
 	},
 }
 

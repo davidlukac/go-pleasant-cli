@@ -70,6 +70,13 @@ func initConfig() {
 		viper.AddConfigPath(home)
 		viper.SetConfigType("yaml")
 		viper.SetConfigName(".plesant")
+
+		cwd, err := os.Getwd()
+		cobra.CheckErr(err)
+
+		viper.AddConfigPath(cwd)
+		viper.SetConfigType("yaml")
+		viper.SetConfigName(".pleasant")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
