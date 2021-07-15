@@ -18,11 +18,9 @@ limitations under the License.
 */
 
 import (
-	"github.com/davidlukac/go-pleasant-cli/cmd/pleasant"
-	log "github.com/sirupsen/logrus"
+	"github.com/davidlukac/go-pleasant-cli/cmd/pleasant/commands"
 )
 
 func main() {
-	log.Info("Main")
-	pleasant.Execute()
+	commands.Execute()
 }

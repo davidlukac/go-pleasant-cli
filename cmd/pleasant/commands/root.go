@@ -1,5 +1,5 @@
-// Package pleasant /*
-package pleasant
+// Package commands /*
+package commands
 
 /*
 Copyright © 2021 David Lukac <david.lukac@users.noreply.github.com>
@@ -19,13 +19,14 @@ limitations under the License.
 
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"os"
-
 	"github.com/spf13/viper"
+	"os"
 )
 
 var cfgFile string
+var quiet = false
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -37,9 +38,6 @@ examples and usage of using your application. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -52,6 +50,11 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.plesant.yaml)")
+	rootCmd.PersistentFlags().BoolVarP(&quiet, "quiet", "q", false, "Minimal output")
+	err := viper.BindPFlag("quiet", rootCmd.PersistentFlags().Lookup("quiet"))
+	if err != nil {
+		return
+	}
 
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
@@ -81,8 +84,12 @@ func initConfig() {
 
 	viper.AutomaticEnv() // read in environment variables that match
 
+	if quiet {
+		logrus.SetLevel(logrus.ErrorLevel)
+	}
+
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
+	if err := viper.ReadInConfig(); err == nil && !quiet {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
 }

@@ -1,2 +1,5 @@
 #IDEs
 .idea
+
+# Sensitive data / local configuration
+.pleasant.yaml

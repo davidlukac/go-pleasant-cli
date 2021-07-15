@@ -1,5 +1,5 @@
-// Package pleasant /*
-package pleasant
+// Package commands /*
+package commands
 
 /*
 Copyright © 2021 David Lukac <david.lukac@users.noreply.github.com>
@@ -18,43 +18,35 @@ limitations under the License.
 */
 
 import (
-	"fmt"
-	"github.com/davidlukac/go-pleasant-cli/internal"
-	"strings"
-
 	"github.com/spf13/cobra"
 )
 
-// createFolderCmd represents the folder command
-var createFolderCmd = &cobra.Command{
-	Use:   "folder",
-	Short: "A brief description of your command",
+// passwordServerCmd represents the passwordServer command
+var passwordServerCmd = &cobra.Command{
+	Use:     "password-server",
+	Aliases: []string{"ps"},
+	Short:   "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Args: cobra.ExactArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("create folder called with %s\n", args[0])
-		pathParts := strings.Split(args[0], "/")
-		internal.CreateFolders(pathParts, "")
-		lastFolderId := internal.GetFolderIdFromPath(pathParts)
-		fmt.Println(lastFolderId)
-	},
+	//Run: func(cmd *cobra.Command, args []string) {
+	//	fmt.Println("ps called")
+	//},
 }
 
 func init() {
-	createCmd.AddCommand(createFolderCmd)
+	rootCmd.AddCommand(passwordServerCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// createFolderCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// passwordServerCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// createFolderCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// passwordServerCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

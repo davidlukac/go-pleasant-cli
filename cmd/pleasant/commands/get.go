@@ -1,5 +1,5 @@
-// Package pleasant /*
-package pleasant
+// Package commands /*
+package commands
 
 /*
 Copyright © 2021 David Lukac <david.lukac@users.noreply.github.com>
@@ -18,15 +18,12 @@ limitations under the License.
 */
 
 import (
-	"fmt"
-	"github.com/davidlukac/go-pleasant-cli/internal"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
-// loginCmd represents the login command
-var loginCmd = &cobra.Command{
-	Use:   "login",
+// getCmd represents the get command
+var getCmd = &cobra.Command{
+	Use:   "get",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -34,22 +31,21 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		vault := internal.GetVault()
-		log.Infoln(fmt.Sprintf("Logged in as %s@%s", vault.Username, vault.URL))
-	},
+	//Run: func(cmd *cobra.Command, args []string) {
+	//	fmt.Printf("get called with %s\n", args)
+	//},
 }
 
 func init() {
-	passwordServerCmd.AddCommand(loginCmd)
+	passwordServerCmd.AddCommand(getCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// loginCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// getCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// loginCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// getCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
