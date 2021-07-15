@@ -1,5 +1,5 @@
-// Package pleasant /*
-package pleasant
+// Package commands /*
+package commands
 
 /*
 Copyright © 2021 David Lukac <david.lukac@users.noreply.github.com>

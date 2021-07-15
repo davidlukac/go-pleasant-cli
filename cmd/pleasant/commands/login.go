@@ -1,5 +1,5 @@
-// Package pleasant /*
-package pleasant
+// Package commands /*
+package commands
 
 /*
 Copyright © 2021 David Lukac <david.lukac@users.noreply.github.com>
@@ -24,9 +24,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// entryCmd represents the entry command
-var entryCmd = &cobra.Command{
-	Use:   "entry",
+// loginCmd represents the login command
+var loginCmd = &cobra.Command{
+	Use:   "login",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -34,23 +34,22 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Infoln(fmt.Sprintf("get entry called with %s", args[0]))
-		fmt.Println(internal.GetEntry(args[0]))
+		vault := internal.GetVault()
+		log.Infoln(fmt.Sprintf("Logged in as %s@%s", vault.Username, vault.URL))
 	},
 }
 
 func init() {
-	getCmd.AddCommand(entryCmd)
+	passwordServerCmd.AddCommand(loginCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// entryCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// loginCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// entryCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// loginCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

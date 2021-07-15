@@ -1,5 +1,5 @@
-// Package pleasant /*
-package pleasant
+// Package commands /*
+package commands
 
 /*
 Copyright © 2021 David Lukac <david.lukac@users.noreply.github.com>
@@ -24,6 +24,7 @@ import (
 	"github.com/dchest/uniuri"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"golang.org/x/crypto/ssh/terminal"
 	"strings"
 	"syscall"
@@ -73,7 +74,12 @@ to quickly create a Cobra application.`,
 		}
 
 		if internal.EntryExistsByName(name, parentId) {
-			fmt.Printf("Entry with name %s already exists in folder %s. Please choose other name or use command line flags to override this check.", name, parentId)
+			entryId := internal.GetEntryIdByName(name, parentId)
+			if viper.GetBool("quiet") {
+				fmt.Println(entryId)
+			} else {
+				fmt.Printf("Entry with name %s already exists as %s in folder %s. Please choose other name or use command line flags to override this check.\n", name, entryId, parentId)
+			}
 			return
 		}
 
@@ -96,7 +102,11 @@ to quickly create a Cobra application.`,
 			GroupId:          parentId,
 		})
 
-		log.Info(fmt.Sprintf("Created new entry with ID %s", newEntry.Id))
+		if viper.GetBool("quiet") {
+			fmt.Println(newEntry.Id)
+		} else {
+			log.Info(fmt.Sprintf("Created new entry with ID %s", newEntry.Id))
+		}
 	},
 }
 

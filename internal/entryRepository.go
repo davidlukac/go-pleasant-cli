@@ -31,3 +31,17 @@ func EntryExistsByName(name string, parentId string) bool {
 
 	return false
 }
+
+// GetEntryIdByName returns entry ID if it exists, otherwise empty string.
+func GetEntryIdByName(name string, parentId string) string {
+	vault := GetVault()
+	folder := vault.GetFolder(parentId)
+
+	for _, c := range folder.Credentials {
+		if c.Name == name {
+			return c.Id
+		}
+	}
+
+	return ""
+}
