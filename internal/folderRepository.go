@@ -14,6 +14,8 @@ func GetRoot() string {
 	return vault.GetRootFolder()
 }
 
+// FoldersExist checks for existence of provided folders in an array in provided parent. If parent is not provided,
+// root is assumed. Path parts represent folders in each other.
 func FoldersExist(pathParts []string, parentId string) bool {
 	vault := GetVault()
 
