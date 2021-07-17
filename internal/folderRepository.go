@@ -28,7 +28,7 @@ func FoldersExist(pathParts []string, parentId string) bool {
 	for _, f := range parent.Children {
 		if f.Name == pathParts[0] {
 			if len(pathParts) > 1 {
-				return FoldersExist(pathParts[1:], f.Id)
+				return FoldersExist(pathParts[1:], f.ID)
 			} else {
 				return true
 			}
@@ -80,12 +80,12 @@ func CreateFolders(pathParts []string, parentId string) {
 		if FoldersExist(pathParts[0:1], parentId) {
 			currentFolder = GetFolder(pathParts[0], parentId)
 		} else {
-			folderToCreate := client.Folder{Name: pathParts[0], ParentId: parentId}
+			folderToCreate := client.Folder{Name: pathParts[0], ParentID: parentId}
 			currentFolder = vault.CreateFolder(&folderToCreate)
-			log.Info(fmt.Sprintf("%s -> %s", currentFolder.Name, currentFolder.Id))
+			log.Info(fmt.Sprintf("%s -> %s", currentFolder.Name, currentFolder.ID))
 		}
 
-		folderId = currentFolder.Id
+		folderId = currentFolder.ID
 
 		if len(pathParts) > 1 {
 			CreateFolders(pathParts[1:], folderId)
@@ -107,7 +107,7 @@ func GetFolderIdFromPath(pathParts []string) string {
 	parentId := rootId
 	for _, f := range pathParts {
 		folder := GetFolder(f, parentId)
-		parentId = folder.Id
+		parentId = folder.ID
 	}
 
 	return parentId
