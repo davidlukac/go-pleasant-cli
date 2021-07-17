@@ -99,13 +99,13 @@ to quickly create a Cobra application.`,
 			Username:         UsernameFlag,
 			Password:         password,
 			CustomUserFields: map[string]string{},
-			GroupId:          parentId,
+			GroupID:          parentId,
 		})
 
 		if viper.GetBool("quiet") {
-			fmt.Println(newEntry.Id)
+			fmt.Println(newEntry.ID)
 		} else {
-			log.Info(fmt.Sprintf("Created new entry with ID %s", newEntry.Id))
+			log.Info(fmt.Sprintf("Created new entry with ID %s", newEntry.ID))
 		}
 	},
 }

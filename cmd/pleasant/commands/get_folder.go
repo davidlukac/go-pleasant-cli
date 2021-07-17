@@ -57,7 +57,7 @@ to quickly create a Cobra application.`,
 			}
 
 			if JustFolderIdFlag {
-				fmt.Println(folder.Id)
+				fmt.Println(folder.ID)
 			} else {
 				fmt.Println(folder)
 			}

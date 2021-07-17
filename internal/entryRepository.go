@@ -52,7 +52,7 @@ func GetEntryIdByName(name string, parentId string) string {
 
 	for _, c := range folder.Credentials {
 		if c.Name == name {
-			return c.Id
+			return c.ID
 		}
 	}
 
