@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/davidlukac/go-pleasant-vault-client/pkg/client"
+	"regexp"
 	"strings"
 )
 
@@ -88,6 +89,8 @@ func GetEntryIdForPath(path string) string {
 
 	// Sanitize the provided path.
 	path = strings.Trim(path, "/")
+	re := regexp.MustCompile("[ ]*/[ ]*")
+	path = re.ReplaceAllString(path, "/")
 	pathParts := strings.Split(path, "/")
 	if len(pathParts) < 1 {
 		panic(fmt.Sprintf("Provided path %s is invalid! Expecting /foo/bar/entry-name.", originalPath))
@@ -107,4 +110,9 @@ func GetEntryIdForPath(path string) string {
 	entryId := GetEntryIdByName(entryName, parentId)
 
 	return entryId
+}
+
+// GetLinkToEntry returns link to given Entry in the Web UI.
+func GetLinkToEntry(id string) string {
+	return fmt.Sprintf("%s/WebClient/Main?itemId=%s", strings.TrimSuffix(GetVault().URL, "/"), id)
 }

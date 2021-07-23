@@ -20,37 +20,44 @@ limitations under the License.
 import (
 	"fmt"
 	"github.com/davidlukac/go-pleasant-cli/internal"
+	"github.com/davidlukac/go-pleasant-vault-client/pkg/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
-// entryCmd represents the entry command
-var entryCmd = &cobra.Command{
-	Use:   "entry",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+var LinkToEntryFlag = false
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Args: cobra.ExactArgs(1),
+// getEntryCmd Get an Entry from the Password Server.
+var getEntryCmd = &cobra.Command{
+	Use:   "entry",
+	Short: "Get an Entry from the Password Server",
+	Long:  ``,
+	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		var id string
+		var entry *client.Secret
+
 		log.Infoln(fmt.Sprintf("get entry called with %s", args[0]))
-		fmt.Println(internal.GetEntry(args[0]))
+
+		if EntryIsPathNameFolder {
+			id = internal.GetEntryIdForPath(args[0])
+		} else {
+			id = args[0]
+		}
+
+		if LinkToEntryFlag {
+			fmt.Println(internal.GetLinkToEntry(id))
+		} else {
+			entry = internal.GetEntry(id)
+			fmt.Println(entry)
+		}
+
 	},
 }
 
 func init() {
-	getCmd.AddCommand(entryCmd)
+	getCmd.AddCommand(getEntryCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// entryCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// entryCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	getEntryCmd.Flags().BoolVarP(&EntryIsPathNameFolder, "folder", "f", false, "When set to true, entry is not parsed as UUID but as folder path and entry name instead.")
+	getEntryCmd.Flags().BoolVarP(&LinkToEntryFlag, "link", "l", false, "Print link to entry instead of the entry itself.")
 }
