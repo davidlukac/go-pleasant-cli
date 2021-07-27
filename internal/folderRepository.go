@@ -1,9 +1,11 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 	"github.com/davidlukac/go-pleasant-vault-client/pkg/client"
 	log "github.com/sirupsen/logrus"
+	"regexp"
 	"strings"
 )
 
@@ -111,4 +113,31 @@ func GetFolderIdFromPath(pathParts []string) string {
 	}
 
 	return parentId
+}
+
+// ParsePath parses input string that should represent a path in the Password Server structure. The path should be along
+// following style of a path:
+// - foo/bar/baz
+// - /foo/bar/baz/
+// - foo / bar / baz
+// The result is an array of path parts or an error if parsing was unsuccessful.
+func ParsePath(path string) ([]string, error) {
+	var err error = nil
+	var pathParts []string = nil
+
+	originalPath := path
+
+	// Remove any leading and trailing spaces and slashes.
+	path = strings.Trim(path, " /")
+	// Remove spaces before and after '/' separators.
+	re := regexp.MustCompile("[ ]*/[ ]*")
+	path = re.ReplaceAllString(path, "/")
+	pathParts = strings.Split(path, "/")
+
+	if len(pathParts) < 1 {
+		err = errors.New(fmt.Sprintf("Provided path %s is invalid! Expecting something along of '/foo/bar/baz'.", originalPath))
+		pathParts = nil
+	}
+
+	return pathParts, err
 }

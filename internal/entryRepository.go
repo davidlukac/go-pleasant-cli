@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/davidlukac/go-pleasant-vault-client/pkg/client"
-	"regexp"
 	"strings"
 )
 
@@ -87,12 +86,8 @@ func GetEntryIdForPath(path string) string {
 	vault := GetVault()
 	root := vault.GetRootFolder()
 
-	// Sanitize the provided path.
-	path = strings.Trim(path, "/")
-	re := regexp.MustCompile("[ ]*/[ ]*")
-	path = re.ReplaceAllString(path, "/")
-	pathParts := strings.Split(path, "/")
-	if len(pathParts) < 1 {
+	pathParts, err := ParsePath(path)
+	if err != nil {
 		panic(fmt.Sprintf("Provided path %s is invalid! Expecting /foo/bar/entry-name.", originalPath))
 	}
 
@@ -115,4 +110,21 @@ func GetEntryIdForPath(path string) string {
 // GetLinkToEntry returns link to given Entry in the Web UI.
 func GetLinkToEntry(id string) string {
 	return fmt.Sprintf("%s/WebClient/Main?itemId=%s", strings.TrimSuffix(GetVault().URL, "/"), id)
+}
+
+// GetEntryAttachments returns a slice of file attachments for given entry ID.
+func GetEntryAttachments(entryID string) []client.Attachment {
+	vault := GetVault()
+	attachments := vault.GetAttachments(entryID)
+
+	return attachments
+}
+
+// UploadAttachment adds new file attachment to existing Entry and returns updated Attachment object.
+func UploadAttachment(entryID string, attachment client.Attachment) *client.Attachment {
+	vault := GetVault()
+	attachmentID := vault.CreateAttachment(entryID, attachment)
+	newAttachment := vault.GetAttachment(entryID, attachmentID)
+
+	return newAttachment
 }
