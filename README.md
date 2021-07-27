@@ -78,6 +78,17 @@ $ pleasant ps patch entry path/to/entry/entry-name -f -j '{"Username": "new-user
 $ pleasant ps patch entry path/to/entry/entry-name -f -y input.yaml 
 ```
 
+To clone/duplicate an existing entry, along with all its content and attachments:
+```shell
+# Clone an entry inside the original folder (adds ' - Copy' to the name):
+$ pleasant ps duplicate entry <UUID>
+# Clone it to a different folder (identified by the target folder UUID):
+$ pleasant ps duplicate entry <UUID> -t <UUID>
+# Clone the entry into an existing folder identified by a path:
+$ pleasant ps duplicate entry <UUID> -t /foo/bar -p
+# Clone the entry into a new folder on given path (i.e. create missing folders in the provided path):
+$ pleasant ps duplicate entry <UUID> -t /foo/new-bar -p -c
+```
 
 #### Randomized patch values
 
