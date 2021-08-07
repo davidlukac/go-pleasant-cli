@@ -5,6 +5,7 @@ on:
       - develop
       - feature/*
       - hotfix/*
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,3 +34,9 @@ jobs:
 
 #      - name: Run testing
 #        run: go test ./test -v
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: pleasant-linux-x86_64
+          path: build/pleasant
