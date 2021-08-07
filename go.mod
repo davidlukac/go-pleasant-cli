@@ -13,4 +13,5 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-replace github.com/davidlukac/go-pleasant-vault-client v0.0.0-20201104101430-cf5b96afb3ed => ../go-pleasant-vault-client
+// Local development:
+//replace github.com/davidlukac/go-pleasant-vault-client v0.0.0-20201104101430-cf5b96afb3ed => ../go-pleasant-vault-client
