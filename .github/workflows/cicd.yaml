@@ -1,0 +1,66 @@
+name: Main
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - feature/*
+      - hotfix/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Environment Variables from Dotenv
+        uses: c-py/action-dotenv-to-setenv@v3
+        with:
+          env-file: .env
+
+      - name: GoLang setup
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16'
+
+      - name: Install dependencies
+        run: |
+          echo "App version: ${{ env.APP_VERSION }}"
+          go version
+          go get -u golang.org/x/lint/golint
+          go mod download
+
+      - name: Run build
+        run: |
+          go build -o build/ cmd/pleasant/pleasant.go
+
+      - name: Create versioned binary
+        run: |
+          cp build/pleasant build/pleasant-${{ env.APP_VERSION }}-linux-x86_64
+        if: startsWith(github.ref, 'refs/tags/')
+
+      - name: Create build snapshot binary
+        run: |
+          cp build/pleasant build/pleasant-${{ env.APP_VERSION }}-snapshot-linux-x86_64
+        if: startsWith(github.ref, 'refs/heads/')
+
+      - name: Run vet & lint
+        run: |
+          find . -type f -name "*.go" -printf %h\\n | uniq | xargs go vet
+#          find . -type f -name "*.go" -printf %h\\n | uniq | xargs golint
+
+#      - name: Run testing
+#        run: go test ./test -v
+
+      - name: Release build snapshot
+        uses: softprops/action-gh-release@v0.1.12
+        with:
+          name: v${{ env.APP_VERSION }}-snapshot
+          tag_name: v${{ env.APP_VERSION }}-snapshot
+          draft: false
+          prerelease: true
+          fail_on_unmatched_files: true
+          files: build/pleasant-${{ env.APP_VERSION }}-snapshot-linux-x86_64
+        if: github.ref == 'refs/heads/master'

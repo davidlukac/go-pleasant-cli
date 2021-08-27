@@ -3,3 +3,6 @@
 
 # Sensitive data / local configuration
 .pleasant.yaml
+
+# Build
+build/
