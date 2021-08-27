@@ -56,7 +56,6 @@ jobs:
 
       - name: Release build snapshot
         uses: softprops/action-gh-release@v0.1.12
-        if: startsWith(github.ref, 'refs/heads/')
         with:
           name: v${{ env.APP_VERSION }}-snapshot
           tag_name: v${{ env.APP_VERSION }}-snapshot
@@ -64,3 +63,4 @@ jobs:
           prerelease: true
           fail_on_unmatched_files: true
           files: build/pleasant-${{ env.APP_VERSION }}-snapshot-linux-x86_64
+        if: github.ref == 'refs/heads/master'
