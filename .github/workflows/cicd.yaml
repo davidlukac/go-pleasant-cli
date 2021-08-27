@@ -44,5 +44,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: pleasant-linux-x86_64
+          name: pleasant-${{ env.APP_VERSION }}-linux-x86_64
           path: build/pleasant
