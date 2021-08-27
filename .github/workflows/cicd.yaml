@@ -33,7 +33,18 @@ jobs:
           go mod download
 
       - name: Run build
-        run: go build -o build/ cmd/pleasant/pleasant.go
+        run: |
+          go build -o build/ cmd/pleasant/pleasant.go
+
+      - name: Create versioned binary
+        run: |
+          cp build/pleasant build/pleasant-${{ env.APP_VERSION }}-linux-x86_64
+        if: startsWith(${{ github.ref }}, 'refs/tags/')
+
+      - name: Create build snapshot binary
+        run: |
+          cp build/pleasant build/pleasant-${{ env.APP_VERSION }}-snapshot-linux-x86_64
+        if: startsWith(${{ github.ref }}, 'refs/heads/')
 
       - name: Run vet & lint
         run: |
@@ -43,23 +54,14 @@ jobs:
 #      - name: Run testing
 #        run: go test ./test -v
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: pleasant-${{ env.APP_VERSION }}-linux-x86_64
-          path: build/pleasant
-
-      - name: Download artifact back so we can work with it
-        uses: actions/download-artifact@v2
-        with:
-          name: pleasant-${{ env.APP_VERSION }}-linux-x86_64
-          path: build
+#          name: pleasant-${{ env.APP_VERSION }}-linux-x86_64
 
       - name: Release build snapshot
         uses: softprops/action-gh-release@v0.1.12
-#        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/heads/')
         with:
+          name: v${{ env.APP_VERSION }}-snapshot
           draft: true
           prerelease: true
-          name: v${{ env.APP_VERSION }}-snapshot
-          files: build/pleasant-${{ env.APP_VERSION }}-linux-x86_64
+          fail_on_unmatched_files: true
+          files: build/pleasant-${{ env.APP_VERSION }}-snapshot-linux-x86_64
