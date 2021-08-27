@@ -15,6 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Environment Variables from Dotenv
+        uses: c-py/action-dotenv-to-setenv@v3
+        with:
+          env-file: .env
+
       - name: Move snapshot tag
         uses: actions/github-script@v4
         with:
@@ -34,11 +39,6 @@ jobs:
               ref: "refs/tags/${{ env.APP_VERSION }}-snapshot",
               sha: context.sha
             })
-
-      - name: Environment Variables from Dotenv
-        uses: c-py/action-dotenv-to-setenv@v3
-        with:
-          env-file: .env
 
       - name: GoLang setup
         uses: actions/setup-go@v2
