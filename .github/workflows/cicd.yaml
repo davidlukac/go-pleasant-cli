@@ -56,6 +56,18 @@ jobs:
 
 #          name: pleasant-${{ env.APP_VERSION }}-linux-x86_64
 
+      - name: Create a snapshot tag
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.APP_VERSION }}-snapshot",
+              sha: context.sha
+            })
+        if: startsWith(github.ref, 'refs/heads/')
+
       - name: Release build snapshot
         uses: softprops/action-gh-release@v0.1.12
         if: startsWith(github.ref, 'refs/heads/')
