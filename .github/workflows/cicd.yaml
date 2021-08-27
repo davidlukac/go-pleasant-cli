@@ -39,6 +39,7 @@ jobs:
               ref: "refs/tags/v${{ env.APP_VERSION }}-snapshot",
               sha: context.sha
             })
+        if: github.ref == 'refs/heads/master'
 
       - name: GoLang setup
         uses: actions/setup-go@v2
