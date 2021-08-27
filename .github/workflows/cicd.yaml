@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo "App version: ${APP_VERSION}"
+          echo "App version: ${{ env.APP_VERSION }}"
           go version
           go get -u golang.org/x/lint/golint
           go mod download
