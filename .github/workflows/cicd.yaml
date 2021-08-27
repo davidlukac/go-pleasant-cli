@@ -15,6 +15,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Move snapshot tag
+        uses: actions/github-script@v4
+        with:
+          script: |
+            try {
+                await github.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: "ref/tags/${{ env.APP_VERSION }}-snapshot"
+                })
+            } catch (e) {
+              console.log("The snapshot tag doesn't exist yet: " + e)
+            }
+            await github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.APP_VERSION }}-snapshot",
+              sha: context.sha
+            })
+
       - name: Environment Variables from Dotenv
         uses: c-py/action-dotenv-to-setenv@v3
         with:
