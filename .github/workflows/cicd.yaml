@@ -28,7 +28,7 @@ jobs:
                 await github.git.deleteRef({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  ref: "ref/tags/${{ env.APP_VERSION }}-snapshot"
+                  ref: "refs/tags/v${{ env.APP_VERSION }}-snapshot"
                 })
             } catch (e) {
               console.log("The snapshot tag doesn't exist yet: " + e)
@@ -36,7 +36,7 @@ jobs:
             await github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ env.APP_VERSION }}-snapshot",
+              ref: "refs/tags/v${{ env.APP_VERSION }}-snapshot",
               sha: context.sha
             })
 
