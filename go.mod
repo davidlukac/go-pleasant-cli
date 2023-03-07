@@ -9,7 +9,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.8.1
-	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
+	golang.org/x/crypto v0.1.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
